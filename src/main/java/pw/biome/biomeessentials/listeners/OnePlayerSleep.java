@@ -12,12 +12,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import pw.biome.biomeessentials.BiomeEssentials;
 import pw.biome.biomeessentials.commands.DisableSleepSkipCommand;
 
+import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class OnePlayerSleep implements Listener {
 
-    private final ConcurrentHashMap<UUID, Integer> buffer = new ConcurrentHashMap<>();
+    private final HashMap<UUID, Integer> buffer = new HashMap<>();
 
     @EventHandler
     public void bedEnter(PlayerBedEnterEvent event) {
