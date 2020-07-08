@@ -33,12 +33,14 @@ public class OnePlayerSleep implements Listener {
                 if (world.hasStorm()) world.setStorm(false);
 
                 Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> {
-                    long fullTime = world.getFullTime();
-                    long newTime = fullTime + (24000 - fullTime);
+                    if (player.isSleeping()) {
+                        long fullTime = world.getFullTime();
+                        long newTime = fullTime + (24000 - fullTime);
 
-                    world.setFullTime(newTime);
+                        world.setFullTime(newTime);
 
-                    Bukkit.broadcastMessage(player.getDisplayName() + ChatColor.YELLOW + " went to bed. Sweet Dreams");
+                        Bukkit.broadcastMessage(player.getDisplayName() + ChatColor.YELLOW + " went to bed. Sweet Dreams");
+                    }
                 }, 5 * 20);
             }
         }
@@ -49,7 +51,7 @@ public class OnePlayerSleep implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (DisableSleepSkipCommand.getPreventList().contains(uuid) && !buffer.containsKey(uuid)) {
+        if (DisableSleepSkipCommand.getPreventListTaskMap().containsKey(uuid) && !buffer.containsKey(uuid)) {
             int taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
                     DisableSleepSkipCommand.removeAndCheck(uuid), 5 * 20).getTaskId();
             buffer.put(uuid, taskId);

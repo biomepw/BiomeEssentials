@@ -11,17 +11,16 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pw.biome.biomeessentials.BiomeEssentials;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class DisableSleepSkipCommand implements CommandExecutor {
 
     @Getter
-    private static final List<UUID> preventList = new ArrayList<>();
+    private static final HashMap<UUID, Integer> preventListTaskMap = new HashMap<>();
 
     public static boolean isSleepDisabled() {
-        return preventList.isEmpty();
+        return preventListTaskMap.size() != 0;
     }
 
     @Override
@@ -31,14 +30,16 @@ public class DisableSleepSkipCommand implements CommandExecutor {
             UUID uuid = player.getUniqueId();
             World world = player.getWorld();
 
-            if (preventList.contains(uuid)) {
-                preventList.remove(uuid);
-
+            if (preventListTaskMap.containsKey(uuid)) {
+                Bukkit.getScheduler().cancelTask(preventListTaskMap.get(uuid));
+                preventListTaskMap.remove(uuid);
                 Bukkit.broadcastMessage(ChatColor.YELLOW + "Sleeping is enabled again");
             } else {
+                int taskId;
                 if (world.isThundering()) {
                     Bukkit.broadcastMessage(ChatColor.GOLD + player.getDisplayName() + " would like the thunder");
-                    Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> removeAndCheck(uuid), 3600);
+                    taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
+                            removeAndCheck(uuid), 3600).getTaskId();
                 } else {
                     Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + " would like the night");
                     long time = world.getTime();
@@ -50,16 +51,17 @@ public class DisableSleepSkipCommand implements CommandExecutor {
                         delay = 3600L;
                     }
 
-                    Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> removeAndCheck(uuid), delay);
+                    taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
+                            removeAndCheck(uuid), delay).getTaskId();
                 }
-                preventList.add(uuid);
+                preventListTaskMap.put(uuid, taskId);
             }
         }
         return true;
     }
 
     public static void removeAndCheck(UUID uuid) {
-        preventList.remove(uuid);
+        preventListTaskMap.remove(uuid);
         if (!isSleepDisabled()) {
             Bukkit.broadcastMessage(ChatColor.YELLOW + "Sleeping is enabled again");
         }
