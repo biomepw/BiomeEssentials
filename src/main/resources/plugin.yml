@@ -1,0 +1,8 @@
+name: BiomeEssentials
+version: ${project.version}
+main: pw.biome.biomeessentials.BiomeEssentials
+api-version: 1.16
+commands:
+  coords:
+    usage: /coords
+    description: Broadcasts player's current coordinates
