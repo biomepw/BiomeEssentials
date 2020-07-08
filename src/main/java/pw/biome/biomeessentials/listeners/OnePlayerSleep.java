@@ -6,18 +6,18 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pw.biome.biomeessentials.BiomeEssentials;
 import pw.biome.biomeessentials.commands.DisableSleepSkipCommand;
 
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class OnePlayerSleep implements Listener {
 
-    private final HashMap<UUID, Integer> buffer = new HashMap<>();
+    private final ConcurrentHashMap<UUID, Integer> buffer = new ConcurrentHashMap<>();
 
     @EventHandler
     public void bedEnter(PlayerBedEnterEvent event) {
@@ -59,8 +59,8 @@ public class OnePlayerSleep implements Listener {
     }
 
     @EventHandler
-    public void playerJoin(PlayerJoinEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
+    public void playerJoin(AsyncPlayerPreLoginEvent event) {
+        UUID uuid = event.getUniqueId();
 
         int taskId = buffer.getOrDefault(uuid, 0);
         if (taskId != 0) {

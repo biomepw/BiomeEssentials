@@ -1,5 +1,6 @@
 package pw.biome.biomeessentials;
 
+import lombok.Getter;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import pw.biome.biomeessentials.commands.CoordsCommand;
@@ -13,7 +14,7 @@ import pw.biome.biomeessentials.listeners.WorkstationHighlight;
 
 public final class BiomeEssentials extends JavaPlugin {
 
-
+    @Getter
     private static BiomeEssentials plugin;
 
     @Override
@@ -42,9 +43,5 @@ public final class BiomeEssentials extends JavaPlugin {
         pluginManager.registerEvents(new DragonEggDrop(), this);
         pluginManager.registerEvents(new OnePlayerSleep(), this);
         pluginManager.registerEvents(new WorkstationHighlight(), this);
-    }
-
-    public static BiomeEssentials getPlugin() {
-        return plugin;
     }
 }
