@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pw.biome.biomeessentials.BiomeEssentials;
 import pw.biome.biomeessentials.commands.DisableSleepSkipCommand;
@@ -48,11 +49,20 @@ public class OnePlayerSleep implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (DisableSleepSkipCommand.getPreventList().contains(uuid)) {
-            
-            int taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> {
+        if (DisableSleepSkipCommand.getPreventList().contains(uuid) && !buffer.containsKey(uuid)) {
+            int taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
+                    DisableSleepSkipCommand.removeAndCheck(uuid), 5 * 20).getTaskId();
+            buffer.put(uuid, taskId);
+        }
+    }
 
-            }, 5 * 20).getTaskId();
+    @EventHandler
+    public void playerJoin(PlayerJoinEvent event) {
+        UUID uuid = event.getPlayer().getUniqueId();
+
+        int taskId = buffer.getOrDefault(uuid, 0);
+        if (taskId != 0) {
+            Bukkit.getScheduler().cancelTask(taskId);
         }
     }
 }
