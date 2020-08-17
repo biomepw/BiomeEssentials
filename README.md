@@ -1,2 +1,2 @@
-# BiomeEssentials ![build status](https://ci.husk.pro/BiomeEssentials/badge)
+# BiomeEssentials ![build status](https://ci.biome.pw/BiomeEssentials/badge)
 Essentials for Biome
