@@ -6,6 +6,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import pw.biome.biomeessentials.commands.CoordsCommand;
 import pw.biome.biomeessentials.commands.DisableSleepSkipCommand;
+import pw.biome.biomeessentials.commands.SlimeChunkCommand;
 import pw.biome.biomeessentials.commands.WorkstationHighlightCommand;
 import pw.biome.biomeessentials.listeners.DisableVoxelMap;
 import pw.biome.biomeessentials.listeners.DragonEggDrop;
@@ -35,6 +36,7 @@ public final class BiomeEssentials extends JavaPlugin {
         manager.registerCommand(new CoordsCommand());
         manager.registerCommand(new DisableSleepSkipCommand());
         manager.registerCommand(new WorkstationHighlightCommand());
+        manager.registerCommand(new SlimeChunkCommand());
     }
 
     private void registerListeners() {
