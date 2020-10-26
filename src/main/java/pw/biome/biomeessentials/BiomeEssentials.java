@@ -1,5 +1,6 @@
 package pw.biome.biomeessentials;
 
+import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,9 +31,10 @@ public final class BiomeEssentials extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("coords").setExecutor(new CoordsCommand());
-        getCommand("preventsleep").setExecutor(new DisableSleepSkipCommand());
-        getCommand("whl").setExecutor(new WorkstationHighlightCommand());
+        PaperCommandManager manager = new PaperCommandManager(plugin);
+        manager.registerCommand(new CoordsCommand());
+        manager.registerCommand(new DisableSleepSkipCommand());
+        manager.registerCommand(new WorkstationHighlightCommand());
     }
 
     private void registerListeners() {

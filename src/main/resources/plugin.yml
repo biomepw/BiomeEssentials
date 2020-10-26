@@ -2,15 +2,3 @@ name: BiomeEssentials
 version: ${project.version}
 main: pw.biome.biomeessentials.BiomeEssentials
 api-version: 1.16
-commands:
-  coords:
-    usage: /coords
-    description: Broadcasts player's current coordinates
-  workstationhighlight:
-    usage: /workstationhighlights
-    aliases: whl
-    description: Highlights a villagers workstation
-  preventsleep:
-    usage: /preventsleep
-    aliases: ps
-    description: Prevents sleeping through the night

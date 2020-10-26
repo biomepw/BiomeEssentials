@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class DisableVoxelMap implements Listener {
 
     @EventHandler
-    public void playerJoin(final PlayerJoinEvent event) {
+    public void playerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         player.sendRawMessage("§3 §6 §3 §6 §3 §6 §d ");
         player.sendRawMessage("§3 §6 §3 §6 §3 §6 §e ");

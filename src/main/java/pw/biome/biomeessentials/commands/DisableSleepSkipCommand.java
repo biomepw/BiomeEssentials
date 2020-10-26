@@ -1,20 +1,22 @@
 package pw.biome.biomeessentials.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import pw.biome.biomeessentials.BiomeEssentials;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class DisableSleepSkipCommand implements CommandExecutor {
+@CommandAlias("preventsleep|ps")
+@Description("Sleep management commands")
+public class DisableSleepSkipCommand extends BaseCommand {
 
     @Getter
     private static final HashMap<UUID, Integer> preventListTaskMap = new HashMap<>();
@@ -23,41 +25,38 @@ public class DisableSleepSkipCommand implements CommandExecutor {
         return preventListTaskMap.size() != 0;
     }
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            UUID uuid = player.getUniqueId();
-            World world = player.getWorld();
+    @Default
+    @Description("Prevents sleeping")
+    public void onCommand(Player player) {
+        UUID uuid = player.getUniqueId();
+        World world = player.getWorld();
 
-            if (preventListTaskMap.containsKey(uuid)) {
-                Bukkit.getScheduler().cancelTask(preventListTaskMap.get(uuid));
-                preventListTaskMap.remove(uuid);
-                Bukkit.broadcastMessage(ChatColor.YELLOW + "Sleeping is enabled again");
+        if (preventListTaskMap.containsKey(uuid)) {
+            Bukkit.getScheduler().cancelTask(preventListTaskMap.get(uuid));
+            preventListTaskMap.remove(uuid);
+            Bukkit.broadcastMessage(ChatColor.YELLOW + "Sleeping is enabled again");
+        } else {
+            int taskId;
+            if (world.isThundering()) {
+                Bukkit.broadcastMessage(ChatColor.GOLD + player.getDisplayName() + " would like the thunder");
+                taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
+                        removeAndCheck(uuid), 3600).getTaskId();
             } else {
-                int taskId;
-                if (world.isThundering()) {
-                    Bukkit.broadcastMessage(ChatColor.GOLD + player.getDisplayName() + " would like the thunder");
-                    taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
-                            removeAndCheck(uuid), 3600).getTaskId();
+                Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + " would like the night");
+                long time = world.getTime();
+                long delay;
+
+                if (time < 12541L) {
+                    delay = 12541L - time + 3600L;
                 } else {
-                    Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + " would like the night");
-                    long time = world.getTime();
-                    long delay;
-
-                    if (time < 12541L) {
-                        delay = 12541L - time + 3600L;
-                    } else {
-                        delay = 3600L;
-                    }
-
-                    taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
-                            removeAndCheck(uuid), delay).getTaskId();
+                    delay = 3600L;
                 }
-                preventListTaskMap.put(uuid, taskId);
+
+                taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
+                        removeAndCheck(uuid), delay).getTaskId();
             }
+            preventListTaskMap.put(uuid, taskId);
         }
-        return true;
     }
 
     public static void removeAndCheck(UUID uuid) {
