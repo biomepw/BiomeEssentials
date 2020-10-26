@@ -27,7 +27,7 @@ public final class BiomeEssentials extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getServer().getScheduler().cancelTasks(this);
+        getServer().getScheduler().cancelTasks(plugin);
     }
 
     private void registerCommands() {
@@ -40,10 +40,11 @@ public final class BiomeEssentials extends JavaPlugin {
     private void registerListeners() {
         PluginManager pluginManager = getServer().getPluginManager();
 
-        pluginManager.registerEvents(new DisableVoxelMap(), this);
-        pluginManager.registerEvents(new ShulkerDoubleDrop(), this);
-        pluginManager.registerEvents(new DragonEggDrop(), this);
-        pluginManager.registerEvents(new OnePlayerSleep(), this);
-        pluginManager.registerEvents(new WorkstationHighlight(), this);
+        pluginManager.registerEvents(new DisableVoxelMap(), plugin);
+        pluginManager.registerEvents(new ShulkerDoubleDrop(), plugin);
+        pluginManager.registerEvents(new DragonEggDrop(), plugin);
+        pluginManager.registerEvents(new OnePlayerSleep(), plugin);
+        pluginManager.registerEvents(new WorkstationHighlight(), plugin);
+        pluginManager.registerEvents(new WorkstationHighlight(), plugin);
     }
 }
