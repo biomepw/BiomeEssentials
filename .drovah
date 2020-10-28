@@ -2,5 +2,5 @@
 commands = ["mvn clean package"]
 
 [archive]
-files = ["build/libs/BiomeEssentials-"]
+files = ["target/BiomeEssentials-"]
 append_buildnumber = true
