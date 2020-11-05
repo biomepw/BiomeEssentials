@@ -11,7 +11,7 @@ import pw.biome.biomeessentials.commands.WorkstationHighlightCommand;
 import pw.biome.biomeessentials.listeners.DisableVoxelMap;
 import pw.biome.biomeessentials.listeners.DragonEggDrop;
 import pw.biome.biomeessentials.listeners.OnePlayerSleep;
-import pw.biome.biomeessentials.listeners.ShulkerDoubleDrop;
+import pw.biome.biomeessentials.listeners.WanderingTraderChanges;
 import pw.biome.biomeessentials.listeners.WorkstationHighlight;
 
 public final class BiomeEssentials extends JavaPlugin {
@@ -43,10 +43,9 @@ public final class BiomeEssentials extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
 
         pluginManager.registerEvents(new DisableVoxelMap(), plugin);
-        pluginManager.registerEvents(new ShulkerDoubleDrop(), plugin);
         pluginManager.registerEvents(new DragonEggDrop(), plugin);
         pluginManager.registerEvents(new OnePlayerSleep(), plugin);
         pluginManager.registerEvents(new WorkstationHighlight(), plugin);
-        pluginManager.registerEvents(new WorkstationHighlight(), plugin);
+        pluginManager.registerEvents(new WanderingTraderChanges(), plugin);
     }
 }
