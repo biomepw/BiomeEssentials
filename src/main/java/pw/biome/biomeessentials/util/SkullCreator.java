@@ -2,7 +2,11 @@ package pw.biome.biomeessentials.util;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.SkullType;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +30,8 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    private SkullCreator() {}
+    private SkullCreator() {
+    }
 
     private static boolean warningPosted = false;
 
@@ -317,6 +322,7 @@ public class SkullCreator {
                 Bukkit.getLogger().warning("SKULLCREATOR API - Using the legacy bukkit API with 1.13+ bukkit versions is not supported!");
                 warningPosted = true;
             }
-        } catch (NoSuchFieldException | IllegalArgumentException ignored) {}
+        } catch (NoSuchFieldException | IllegalArgumentException ignored) {
+        }
     }
 }

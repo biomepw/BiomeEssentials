@@ -21,7 +21,7 @@ public class DragonEggDrop implements Listener {
         if (world.getName().equals("world_the_end")) {
             Block highestBlock = world.getHighestBlockAt(0, 0);
             if (highestBlock.getType() == Material.DRAGON_EGG) return;
-            
+
             Location dragonEggSpawnLocation = new Location(world, 0.0, highestBlock.getLocation().getBlockY() + 1, 0.0);
             Block block = dragonEggSpawnLocation.getBlock();
             block.setType(Material.DRAGON_EGG);

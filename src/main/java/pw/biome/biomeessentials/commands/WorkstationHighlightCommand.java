@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 @CommandAlias("workstationhighlights|whl")
-@Description("Sleep management commands")
+@Description("Workstation commands")
 public class WorkstationHighlightCommand extends BaseCommand {
 
     @Getter
