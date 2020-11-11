@@ -127,6 +127,7 @@ public class SkullCreator {
 
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(id);
+        if (offlinePlayer.getName() == null) return null;
         meta.setOwningPlayer(offlinePlayer);
         meta.setDisplayName(ChatColor.YELLOW + offlinePlayer.getName() + "'s head");
         item.setItemMeta(meta);

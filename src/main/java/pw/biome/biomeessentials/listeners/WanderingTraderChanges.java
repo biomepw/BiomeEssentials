@@ -1,6 +1,7 @@
 package pw.biome.biomeessentials.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.WanderingTrader;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class WanderingTraderChanges implements Listener {
@@ -35,7 +37,7 @@ public final class WanderingTraderChanges implements Listener {
             WanderingTrader wanderingTrader = (WanderingTrader) entity;
 
             // Run a tick later...
-            Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> handleTrades(wanderingTrader), 1);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(BiomeEssentials.getPlugin(), () -> handleTrades(wanderingTrader), 1);
         }
     }
 
@@ -45,19 +47,22 @@ public final class WanderingTraderChanges implements Listener {
      * @param wanderingTrader to change trades for
      */
     private void handleTrades(WanderingTrader wanderingTrader) {
-        wanderingTrader.getRecipes().clear();
+        CompletableFuture.runAsync(() -> {
+            List<MerchantRecipe> newRecipes = new ArrayList<>(10);
 
-        List<MerchantRecipe> newRecipes = new ArrayList<>(10);
+            // Loop through random players and create a skull object for each, and then place that skull in the newRecipes collection
+            getRandomPlayers().forEach(uuid -> {
+                ItemStack skull = SkullCreator.itemFromUuid(uuid);
+                if (skull != null) {
+                    MerchantRecipe recipe = new MerchantRecipe(skull, 3);
+                    recipe.addIngredient(new ItemStack(Material.EMERALD_BLOCK));
+                    newRecipes.add(recipe);
+                }
+            });
 
-        // Loop through 10 random players and create a skull object for each, and then place that skull in the newRecipes collection
-        // Run this task async to avoid lag on creating from UUID (unsure if this will even cause lag)
-        Bukkit.getScheduler().runTaskAsynchronously(BiomeEssentials.getPlugin(), () -> getTenRandomPlayers().forEach(uuid -> {
-            ItemStack skull = SkullCreator.itemFromUuid(uuid);
-            MerchantRecipe recipe = new MerchantRecipe(skull, 3);
-            newRecipes.add(recipe);
-        }));
-
-        wanderingTrader.setRecipes(newRecipes);
+            // Return to sync, and set recipes
+            Bukkit.getScheduler().runTask(BiomeEssentials.getPlugin(), () -> wanderingTrader.setRecipes(newRecipes));
+        });
     }
 
     /**
@@ -65,12 +70,11 @@ public final class WanderingTraderChanges implements Listener {
      *
      * @return List of 10 UUID
      */
-    public HashSet<UUID> getTenRandomPlayers() {
+    public HashSet<UUID> getRandomPlayers() {
         HashSet<UUID> randomPlayers = new HashSet<>(10);
+        List<UUID> whitelistCache = new ArrayList<>(MySQLHelper.getWhitelistCache().values());
 
-        List<UUID> whitelistCache = (List<UUID>) MySQLHelper.getWhitelistCache().values();
-
-        for (int i = 0; i < 9 && randomPlayers.size() < 10; i++) {
+        for (int i = 0; i < 8; i++) {
             int randomInt = ThreadLocalRandom.current().nextInt(whitelistCache.size());
             UUID randomEntry = whitelistCache.get(randomInt);
             if (!randomPlayers.contains(randomEntry)) {
