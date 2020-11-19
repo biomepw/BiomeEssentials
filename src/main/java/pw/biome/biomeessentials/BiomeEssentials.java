@@ -6,6 +6,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import pw.biome.biomeessentials.commands.CoordsCommand;
 import pw.biome.biomeessentials.commands.DisableSleepSkipCommand;
+import pw.biome.biomeessentials.commands.NetherPortalCommand;
 import pw.biome.biomeessentials.commands.SlimeChunkCommand;
 import pw.biome.biomeessentials.commands.WorkstationHighlightCommand;
 import pw.biome.biomeessentials.listeners.DisableVoxelMap;
@@ -19,6 +20,8 @@ public final class BiomeEssentials extends JavaPlugin {
     @Getter
     private static BiomeEssentials plugin;
 
+    private PaperCommandManager manager;
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -29,14 +32,16 @@ public final class BiomeEssentials extends JavaPlugin {
     @Override
     public void onDisable() {
         getServer().getScheduler().cancelTasks(plugin);
+        manager.unregisterCommands();
     }
 
     private void registerCommands() {
-        PaperCommandManager manager = new PaperCommandManager(plugin);
+        manager = new PaperCommandManager(plugin);
         manager.registerCommand(new CoordsCommand());
         manager.registerCommand(new DisableSleepSkipCommand());
         manager.registerCommand(new WorkstationHighlightCommand());
         manager.registerCommand(new SlimeChunkCommand());
+        manager.registerCommand(new NetherPortalCommand());
     }
 
     private void registerListeners() {

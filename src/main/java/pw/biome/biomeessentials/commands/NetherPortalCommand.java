@@ -1,5 +1,6 @@
 package pw.biome.biomeessentials.commands;
 
+import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
@@ -9,7 +10,7 @@ import org.bukkit.entity.Player;
 
 @CommandAlias("netherportal|np|netherp|portal")
 @Description("Displays the converted coordinates")
-public class NetherPortalCommand {
+public class NetherPortalCommand extends BaseCommand {
 
     @Default
     public void onCommand(Player player) {
