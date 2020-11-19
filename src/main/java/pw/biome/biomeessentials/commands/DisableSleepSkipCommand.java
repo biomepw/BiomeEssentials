@@ -38,11 +38,11 @@ public class DisableSleepSkipCommand extends BaseCommand {
         } else {
             int taskId;
             if (world.isThundering()) {
-                Bukkit.broadcastMessage(ChatColor.GOLD + player.getDisplayName() + " would like the thunder");
+                Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " would like the thunder");
                 taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
                         removeAndCheck(uuid), 3600).getTaskId();
             } else {
-                Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + " would like the night");
+                Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " would like the night");
                 long time = world.getTime();
                 long delay;
 

@@ -16,21 +16,14 @@ public class CoordsCommand extends BaseCommand {
     @Description("Broadcasts the coords of the command sender")
     public void onCommand(Player player) {
         String worldName = player.getWorld().getName();
-        String world = worldName;
+        String world = switch (worldName) {
+            case "world_the_end" -> ChatColor.AQUA + "End";
+            case "world" -> ChatColor.YELLOW + "Overworld";
+            case "world_nether" -> ChatColor.RED + "Nether";
+            default -> worldName;
+        };
 
-        switch (worldName) {
-            case "world_the_end":
-                world = ChatColor.AQUA + "End";
-                break;
-            case "world":
-                world = ChatColor.YELLOW + "Overworld";
-                break;
-            case "world_nether":
-                world = ChatColor.RED + "Nether";
-                break;
-        }
-
-        Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + "'s coords are "
+        Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + "'s coords are "
                 + player.getLocation().getBlockX() + ", " + player.getLocation().getBlockY() + ", " +
                 player.getLocation().getBlockZ() + ", World: " + world);
     }
