@@ -72,7 +72,7 @@ public final class WanderingTraderChanges implements Listener {
      */
     public HashSet<UUID> getRandomPlayers() {
         HashSet<UUID> randomPlayers = new HashSet<>(10);
-        List<UUID> whitelistCache = new ArrayList<>(MySQLHelper.getWhitelistCache().values());
+        List<UUID> whitelistCache = new ArrayList<>(MySQLHelper.getWhitelistCache().keySet());
 
         for (int i = 0; i < 8; i++) {
             int randomInt = ThreadLocalRandom.current().nextInt(whitelistCache.size());
