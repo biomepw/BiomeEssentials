@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.inventory.meta.SkullMeta;
 import pro.husk.whitelistsql.utility.MySQLHelper;
 import pw.biome.biomeessentials.BiomeEssentials;
 import pw.biome.biomeessentials.util.SkullCreator;
@@ -50,10 +49,7 @@ public final class WanderingTraderChanges implements Listener {
         List<MerchantRecipe> newRecipes = new ArrayList<>(10);
 
         // Loop through random players and create a skull object for each, and then place that skull in the newRecipes collection
-        HashSet<UUID> randomPlayers = getRandomPlayers();
-
-        long st = System.currentTimeMillis();
-        for (UUID uuid : randomPlayers) {
+        for (UUID uuid : getRandomPlayers()) {
             ItemStack skull = SkullCreator.itemFromUuid(uuid);
             if (skull != null) {
                 MerchantRecipe recipe = new MerchantRecipe(skull, 3);
@@ -61,18 +57,9 @@ public final class WanderingTraderChanges implements Listener {
                 newRecipes.add(recipe);
             }
         }
-        long el = System.currentTimeMillis() - st;
-
-        System.out.println("finished randoms: elapsed = " + el + "ms");
 
         // Return to sync, and set recipes
-        Bukkit.getScheduler().runTask(BiomeEssentials.getPlugin(), () -> {
-            long start = System.currentTimeMillis();
-            wanderingTrader.setRecipes(newRecipes);
-            long elapsed = System.currentTimeMillis() - start;
-
-            System.out.println("finished: elapsed = " + elapsed + "ms");
-        });
+        Bukkit.getScheduler().runTask(BiomeEssentials.getPlugin(), () -> wanderingTrader.setRecipes(newRecipes));
     }
 
     /**
