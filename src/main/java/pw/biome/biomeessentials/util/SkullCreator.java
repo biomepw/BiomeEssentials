@@ -1,5 +1,6 @@
 package pw.biome.biomeessentials.util;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
@@ -129,8 +130,13 @@ public class SkullCreator {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(id);
         if (offlinePlayer.getName() == null) return null;
         meta.setOwningPlayer(offlinePlayer);
-        meta.setDisplayName(ChatColor.YELLOW + offlinePlayer.getName() + "'s head");
-        item.setItemMeta(meta);
+
+        PlayerProfile playerProfile = meta.getPlayerProfile();
+        if (playerProfile != null && playerProfile.complete()) {
+            meta.setPlayerProfile(playerProfile);
+            meta.setDisplayName(ChatColor.YELLOW + offlinePlayer.getName() + "'s head");
+            item.setItemMeta(meta);
+        } else return null;
 
         return item;
     }

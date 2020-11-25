@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.meta.SkullMeta;
 import pro.husk.whitelistsql.utility.MySQLHelper;
 import pw.biome.biomeessentials.BiomeEssentials;
 import pw.biome.biomeessentials.util.SkullCreator;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class WanderingTraderChanges implements Listener {
@@ -47,21 +47,31 @@ public final class WanderingTraderChanges implements Listener {
      * @param wanderingTrader to change trades for
      */
     private void handleTrades(WanderingTrader wanderingTrader) {
-        CompletableFuture.runAsync(() -> {
-            List<MerchantRecipe> newRecipes = new ArrayList<>(10);
+        List<MerchantRecipe> newRecipes = new ArrayList<>(10);
 
-            // Loop through random players and create a skull object for each, and then place that skull in the newRecipes collection
-            getRandomPlayers().forEach(uuid -> {
-                ItemStack skull = SkullCreator.itemFromUuid(uuid);
-                if (skull != null) {
-                    MerchantRecipe recipe = new MerchantRecipe(skull, 3);
-                    recipe.addIngredient(new ItemStack(Material.EMERALD_BLOCK));
-                    newRecipes.add(recipe);
-                }
-            });
+        // Loop through random players and create a skull object for each, and then place that skull in the newRecipes collection
+        HashSet<UUID> randomPlayers = getRandomPlayers();
 
-            // Return to sync, and set recipes
-            Bukkit.getScheduler().runTask(BiomeEssentials.getPlugin(), () -> wanderingTrader.setRecipes(newRecipes));
+        long st = System.currentTimeMillis();
+        for (UUID uuid : randomPlayers) {
+            ItemStack skull = SkullCreator.itemFromUuid(uuid);
+            if (skull != null) {
+                MerchantRecipe recipe = new MerchantRecipe(skull, 3);
+                recipe.addIngredient(new ItemStack(Material.EMERALD_BLOCK));
+                newRecipes.add(recipe);
+            }
+        }
+        long el = System.currentTimeMillis() - st;
+
+        System.out.println("finished randoms: elapsed = " + el + "ms");
+
+        // Return to sync, and set recipes
+        Bukkit.getScheduler().runTask(BiomeEssentials.getPlugin(), () -> {
+            long start = System.currentTimeMillis();
+            wanderingTrader.setRecipes(newRecipes);
+            long elapsed = System.currentTimeMillis() - start;
+
+            System.out.println("finished: elapsed = " + elapsed + "ms");
         });
     }
 
