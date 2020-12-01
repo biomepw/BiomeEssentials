@@ -39,7 +39,7 @@ public class OnePlayerSleep implements Listener {
 
                         world.setFullTime(newTime);
 
-                        Bukkit.broadcastMessage(player.getDisplayName() + ChatColor.YELLOW + " went to bed. Sweet Dreams");
+                        Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " went to bed. Sweet Dreams");
                     }
                 }, 5 * 20);
             }
