@@ -34,16 +34,16 @@ public class DisableSleepSkipCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         World world = player.getWorld();
 
-        if (cooldownSet.contains(uuid)) {
-            player.sendMessage(ChatColor.RED + "You have a cooldown on this command!");
-            return;
-        }
-
         if (preventListTaskMap.containsKey(uuid)) {
             Bukkit.getScheduler().cancelTask(preventListTaskMap.get(uuid));
             preventListTaskMap.remove(uuid);
             Bukkit.broadcastMessage(ChatColor.YELLOW + "Sleeping is enabled again");
         } else {
+            if (cooldownSet.contains(uuid)) {
+                player.sendMessage(ChatColor.RED + "You have a cooldown on this command!");
+                return;
+            }
+
             int taskId;
             if (world.isThundering()) {
                 Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " would like the thunder");
