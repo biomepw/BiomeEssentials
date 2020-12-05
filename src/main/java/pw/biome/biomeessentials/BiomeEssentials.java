@@ -5,10 +5,7 @@ import lombok.Getter;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import pw.biome.biomeessentials.commands.*;
-import pw.biome.biomeessentials.listeners.DragonEggDrop;
-import pw.biome.biomeessentials.listeners.OnePlayerSleep;
-import pw.biome.biomeessentials.listeners.WanderingTraderChanges;
-import pw.biome.biomeessentials.listeners.WorkstationHighlight;
+import pw.biome.biomeessentials.listeners.*;
 
 public final class BiomeEssentials extends JavaPlugin {
 
@@ -45,5 +42,6 @@ public final class BiomeEssentials extends JavaPlugin {
         pluginManager.registerEvents(new OnePlayerSleep(), plugin);
         pluginManager.registerEvents(new WorkstationHighlight(), plugin);
         pluginManager.registerEvents(new WanderingTraderChanges(), plugin);
+        pluginManager.registerEvents(new ShulkerDoubleDrop(), plugin);
     }
 }

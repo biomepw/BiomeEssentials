@@ -37,6 +37,7 @@ public class DisableSleepSkipCommand extends BaseCommand {
         if (preventListTaskMap.containsKey(uuid)) {
             Bukkit.getScheduler().cancelTask(preventListTaskMap.get(uuid));
             removeAndCheck(uuid);
+            player.sendMessage(ChatColor.GOLD + "You are no longer requesting sleep!");
         } else {
 
             // Process cooldown check
