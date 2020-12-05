@@ -66,7 +66,7 @@ public class DisableSleepSkipCommand extends BaseCommand {
             preventListTaskMap.put(uuid, taskId);
 
             cooldownSet.add(uuid);
-            Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> cooldownSet.remove(uuid), 10 * 60 * 20); // 10 minutes
+            Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> cooldownSet.remove(uuid), 60 * 60 * 20); // 1 hr
         }
     }
 
