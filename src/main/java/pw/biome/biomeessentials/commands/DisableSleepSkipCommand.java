@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import pw.biome.biomeessentials.BiomeEssentials;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 @CommandAlias("preventsleep|ps")
@@ -20,6 +21,8 @@ public class DisableSleepSkipCommand extends BaseCommand {
 
     @Getter
     private static final HashMap<UUID, Integer> preventListTaskMap = new HashMap<>();
+
+    private static final HashSet<UUID> cooldownSet = new HashSet<>();
 
     public static boolean isSleepDisabled() {
         return preventListTaskMap.size() != 0;
@@ -30,6 +33,11 @@ public class DisableSleepSkipCommand extends BaseCommand {
     public void onCommand(Player player) {
         UUID uuid = player.getUniqueId();
         World world = player.getWorld();
+
+        if (cooldownSet.contains(uuid)) {
+            player.sendMessage(ChatColor.RED + "You have a cooldown on this command!");
+            return;
+        }
 
         if (preventListTaskMap.containsKey(uuid)) {
             Bukkit.getScheduler().cancelTask(preventListTaskMap.get(uuid));
@@ -56,6 +64,9 @@ public class DisableSleepSkipCommand extends BaseCommand {
                         removeAndCheck(uuid), delay).getTaskId();
             }
             preventListTaskMap.put(uuid, taskId);
+
+            cooldownSet.add(uuid);
+            Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> cooldownSet.remove(uuid), 10 * 60 * 20); // 10 minutes
         }
     }
 
