@@ -34,11 +34,13 @@ public class DisableSleepSkipCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         World world = player.getWorld();
 
+        // If they are already in the cooldown, remove
         if (preventListTaskMap.containsKey(uuid)) {
             Bukkit.getScheduler().cancelTask(preventListTaskMap.get(uuid));
-            preventListTaskMap.remove(uuid);
-            Bukkit.broadcastMessage(ChatColor.YELLOW + "Sleeping is enabled again");
+            removeAndCheck(uuid);
         } else {
+
+            // Process cooldown check
             if (cooldownSet.contains(uuid)) {
                 player.sendMessage(ChatColor.RED + "You have a cooldown on this command!");
                 return;
@@ -51,14 +53,10 @@ public class DisableSleepSkipCommand extends BaseCommand {
                         removeAndCheck(uuid), 3600).getTaskId();
             } else {
                 Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " would like the night");
-                long time = world.getTime();
-                long delay;
 
-                if (time < 12541L) {
-                    delay = 12541L - time + 3600L;
-                } else {
-                    delay = 3600L;
-                }
+                // Set the task delay for the duration of the night
+                long time = world.getTime();
+                long delay = 24000 - time;
 
                 taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
                         removeAndCheck(uuid), delay).getTaskId();
