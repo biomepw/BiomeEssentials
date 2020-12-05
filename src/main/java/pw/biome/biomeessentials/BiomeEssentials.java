@@ -4,12 +4,7 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import pw.biome.biomeessentials.commands.CoordsCommand;
-import pw.biome.biomeessentials.commands.DisableSleepSkipCommand;
-import pw.biome.biomeessentials.commands.NetherPortalCommand;
-import pw.biome.biomeessentials.commands.SlimeChunkCommand;
-import pw.biome.biomeessentials.commands.WorkstationHighlightCommand;
-import pw.biome.biomeessentials.listeners.DisableVoxelMap;
+import pw.biome.biomeessentials.commands.*;
 import pw.biome.biomeessentials.listeners.DragonEggDrop;
 import pw.biome.biomeessentials.listeners.OnePlayerSleep;
 import pw.biome.biomeessentials.listeners.WanderingTraderChanges;
@@ -46,7 +41,6 @@ public final class BiomeEssentials extends JavaPlugin {
 
     private void registerListeners() {
         PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new DisableVoxelMap(), plugin);
         pluginManager.registerEvents(new DragonEggDrop(), plugin);
         pluginManager.registerEvents(new OnePlayerSleep(), plugin);
         pluginManager.registerEvents(new WorkstationHighlight(), plugin);
