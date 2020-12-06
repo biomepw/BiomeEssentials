@@ -46,23 +46,17 @@ public class DisableSleepSkipCommand extends BaseCommand {
                 return;
             }
 
-            int taskId;
-            if (world.isThundering()) {
-                Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " would like the thunder");
-                taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
-                        removeAndCheck(uuid), 3600).getTaskId();
-            } else {
-                Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " would like the night");
+            Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " would like the night");
 
-                // Set the task delay for the duration of the night
-                long time = world.getTime();
-                long delay = 24000 - time;
+            // Set the task delay for the duration of the night
+            long time = world.getTime();
+            long delay = 24000 - time;
 
-                taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
-                        removeAndCheck(uuid), delay).getTaskId();
+            int taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
+                    removeAndCheck(uuid), delay).getTaskId();
 
-                player.sendMessage(ChatColor.GOLD + "The night will be held until you turn it off.");
-            }
+            player.sendMessage(ChatColor.GOLD + "The night will be held until you turn it off.");
+
             preventListTaskMap.put(uuid, taskId);
 
             cooldownSet.add(uuid);
@@ -82,7 +76,6 @@ public class DisableSleepSkipCommand extends BaseCommand {
     }
 
     @Subcommand("check")
-    @CommandPermission("preventsleep.debug")
     public void sleepDebug(CommandSender sender) {
         if (preventListTaskMap.size() == 0) {
             sender.sendMessage(ChatColor.GREEN + "No one is requesting night!");
