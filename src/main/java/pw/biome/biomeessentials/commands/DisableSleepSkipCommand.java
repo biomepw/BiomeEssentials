@@ -61,29 +61,27 @@ public class DisableSleepSkipCommand extends BaseCommand {
                 taskId = Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () ->
                         removeAndCheck(uuid), delay).getTaskId();
 
-                player.sendMessage(ChatColor.GOLD + "The night will be held for 3 minutes...");
+                player.sendMessage(ChatColor.GOLD + "The night will be held until you turn it off.");
             }
             preventListTaskMap.put(uuid, taskId);
 
             cooldownSet.add(uuid);
-            Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> cooldownSet.remove(uuid), 60 * 60 * 20); // 1 hr
+            Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> cooldownSet.remove(uuid), 3 * 60 * 60 * 20); // 1 hr
         }
     }
 
     @Subcommand("force")
     @CommandPermission("preventsleep.force")
     public void forceSleep(Player player) {
-        Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> {
-            long fullTime = player.getWorld().getFullTime();
-            long newTime = fullTime + (24000 - fullTime);
+        long fullTime = player.getWorld().getFullTime();
+        long newTime = fullTime + (24000 - fullTime);
 
-            player.getWorld().setFullTime(newTime);
+        player.getWorld().setFullTime(newTime);
 
-            Bukkit.broadcastMessage(org.bukkit.ChatColor.YELLOW + player.getDisplayName() + org.bukkit.ChatColor.GOLD + " went to bed. Sweet Dreams");
-        }, 5 * 20);
+        Bukkit.broadcastMessage(org.bukkit.ChatColor.YELLOW + player.getDisplayName() + org.bukkit.ChatColor.GOLD + " went to bed. Sweet Dreams");
     }
 
-    @Subcommand("debug")
+    @Subcommand("check")
     @CommandPermission("preventsleep.debug")
     public void sleepDebug(CommandSender sender) {
         if (preventListTaskMap.size() == 0) {
