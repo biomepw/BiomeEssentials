@@ -34,10 +34,10 @@ public class OnePlayerSleep implements Listener {
 
                 Bukkit.getScheduler().runTaskLater(BiomeEssentials.getPlugin(), () -> {
                     if (player.isSleeping()) {
-                        long fullTime = world.getFullTime();
+                        long fullTime = world.getTime();
                         long newTime = fullTime + (24000 - fullTime);
 
-                        world.setFullTime(newTime);
+                        world.setTime(newTime);
 
                         Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " went to bed. Sweet Dreams");
                     }
