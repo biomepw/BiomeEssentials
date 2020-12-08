@@ -1,7 +1,11 @@
 package pw.biome.biomeessentials.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Subcommand;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -67,10 +71,10 @@ public class DisableSleepSkipCommand extends BaseCommand {
     @Subcommand("force")
     @CommandPermission("preventsleep.force")
     public void forceSleep(Player player) {
-        long fullTime = player.getWorld().getFullTime();
+        long fullTime = player.getWorld().getTime();
         long newTime = fullTime + (24000 - fullTime);
 
-        player.getWorld().setFullTime(newTime);
+        player.getWorld().setTime(newTime);
 
         Bukkit.broadcastMessage(org.bukkit.ChatColor.YELLOW + player.getDisplayName() + org.bukkit.ChatColor.GOLD + " went to bed. Sweet Dreams");
     }
