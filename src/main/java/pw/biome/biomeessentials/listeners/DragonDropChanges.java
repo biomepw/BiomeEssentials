@@ -9,8 +9,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
-public class DragonEggDrop implements Listener {
+import java.util.concurrent.ThreadLocalRandom;
+
+public class DragonDropChanges implements Listener {
 
     @EventHandler
     public void dragonDeath(EntityDeathEvent event) {
@@ -25,6 +28,13 @@ public class DragonEggDrop implements Listener {
             Location dragonEggSpawnLocation = new Location(world, 0.0, highestBlock.getLocation().getBlockY() + 1, 0.0);
             Block block = dragonEggSpawnLocation.getBlock();
             block.setType(Material.DRAGON_EGG);
+
+            // 1/4 chance of ely drop from dragon
+            var shouldSpawnEly = ThreadLocalRandom.current().nextInt(4) == 1;
+            if (shouldSpawnEly) {
+                var deathLocation = entity.getLocation();
+                world.dropItemNaturally(deathLocation, new ItemStack(Material.ELYTRA, 1));
+            }
         }
     }
 }
