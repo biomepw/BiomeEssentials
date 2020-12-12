@@ -30,7 +30,6 @@ public final class BiomeEssentials extends JavaPlugin {
     private void registerCommands() {
         manager = new PaperCommandManager(plugin);
         manager.registerCommand(new CoordsCommand());
-        manager.registerCommand(new DisableSleepSkipCommand());
         manager.registerCommand(new WorkstationHighlightCommand());
         manager.registerCommand(new SlimeChunkCommand());
         manager.registerCommand(new NetherPortalCommand());
