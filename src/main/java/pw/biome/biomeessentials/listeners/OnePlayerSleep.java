@@ -2,6 +2,7 @@ package pw.biome.biomeessentials.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,8 +25,10 @@ public class OnePlayerSleep implements Listener {
                 if (player.isSleeping()) {
                     long fullTime = world.getTime();
                     long newTime = fullTime + (24000 - fullTime);
-
                     world.setTime(newTime);
+
+                    // Update player's last sleep so phantoms don't spawn every night
+                    player.setStatistic(Statistic.TIME_SINCE_REST, 0);
 
                     Bukkit.broadcastMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " went to bed. Sweet Dreams");
                 }
