@@ -35,7 +35,6 @@ public class SkullCreator {
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(id);
         if (offlinePlayer.getName() == null) return null;
-        meta.setOwningPlayer(offlinePlayer);
 
         PlayerProfile playerProfile = meta.getPlayerProfile();
         if (playerProfile != null && playerProfile.complete()) {
