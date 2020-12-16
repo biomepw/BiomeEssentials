@@ -41,6 +41,5 @@ public final class BiomeEssentials extends JavaPlugin {
         pluginManager.registerEvents(new OnePlayerSleep(), plugin);
         pluginManager.registerEvents(new WorkstationHighlight(), plugin);
         pluginManager.registerEvents(new WanderingTraderChanges(), plugin);
-        pluginManager.registerEvents(new ShulkerDoubleDrop(), plugin);
     }
 }
